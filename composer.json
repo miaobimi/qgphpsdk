@@ -1,0 +1,19 @@
+{
+    "name": "qg/phpsdk",
+    "description": "sdk for php",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "junpei",
+            "email": "junpei@qg.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"qgsdk\\": "src"}
+    },
+    "require": {
+        "php": ">=7.0"
+    }
+}
