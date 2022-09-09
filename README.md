@@ -1,16 +1,27 @@
+
+### demo
+```
+ examples/DymanicShare.php : 动态共享 所有api接口
+ examples/DymanicExcusive.php : 动态独占 所有api接口
+ examples/DymanicAlone.php : 动态独享 所有api接口
+ examples/Tunnel.php : 隧道 所有api接口
+ examples/StaticAlone.php : 静态独享 所有api接口
+```
+
+### 使用composer安装
+```
+composer require qgproxy/phpsdk
+```
+
+### 使用（以动态共享为例）
+``` javascript
 <?php
 
 include '../vendor/autoload.php';
-    
+
 use qgproxy\Api;
 
-/**
- * 动态共享demo
- */
-
-try {
-
-    //========提取IP资源=============================================================================
+//========提取IP资源=============================================================================
     $params = [
         'Key' => 'xxx',
         // 'Num' => 1, //申请数量，默认为1
@@ -91,9 +102,8 @@ try {
     ]; 
     $result = Api::resources($params);
     var_dump($result);die;
+```
 
-    //=====================================================================================
-
-} catch (\Throwable $th) {
-    var_dump($th->getMessage());
-}
+```
+ 您可以在examples目录下找到更全面的示例
+```
