@@ -1,16 +1,27 @@
+
+### demo
+```
+ examples/DymanicShare.php : 动态共享 所有api接口
+ examples/DymanicExcusive.php : 动态独占 所有api接口
+ examples/DymanicAlone.php : 动态独享 所有api接口
+ examples/Tunnel.php : 隧道 所有api接口
+ examples/StaticAlone.php : 静态独享 所有api接口
+```
+
+### 使用composer安装
+```
+composer require qgproxy/phpsdk
+```
+
+### 使用（以动态共享为例）
+``` javascript
 <?php
 
 include '../vendor/autoload.php';
-    
+
 use qgproxy\Api;
 
-/**
- * 静态独享demo
- */
-
-try {
-
-    //========提取IP资源=============================================================================
+//========提取IP资源=============================================================================
     $params = [
         'Key' => 'xxx',
         // 'Num' => 1, //申请数量，默认为1
@@ -32,6 +43,17 @@ try {
     $result = Api::sendRequest($targetUrl, $proxyIp, $proxyPort, $proxyUser, $proxyPassword);
     var_dump($result);die;
 
+    //========获取IP资源池============================================================================
+    $params = [
+        'Key' => 'xxx',
+        // 'Num' => 1, //申请数量，默认为1
+        // 'AreaId' => '', //区域编号(调用区域查询接口获得)
+        // 'Isp' => '', //运营商ID;选填;默认查询全部
+        // 'Detail' => 0, //查看详情，0为关闭，默认为0
+    ]; 
+    $result = Api::extract($params); 
+    var_dump($result);die;
+
     //=======查询IP资源==============================================================================
     $params = [
         'Key' => 'xxx',
@@ -40,16 +62,6 @@ try {
     ]; 
     $result = Api::query($params); 
     var_dump($result);die;
-
-    //========释放IP=============================================================================
-    $params = [
-        'Key' => 'xxx',
-        'IP' => '8.8.8.8', //节点IP，多个用“，”分隔，全部以”* “表示
-        // 'TaskID' => '', //任务ID;多个用,分隔;全部以”* “表示
-    ]; 
-    $result = Api::release($params); 
-    var_dump($result);die;
-
 
     //=======添加白名单==============================================================================
     $params = [
@@ -90,9 +102,8 @@ try {
     ]; 
     $result = Api::resources($params);
     var_dump($result);die;
+```
 
-    //=====================================================================================
-
-} catch (\Throwable $th) {
-    var_dump($th->getMessage());
-}
+```
+ 您可以在examples目录下找到更全面的示例
+```
