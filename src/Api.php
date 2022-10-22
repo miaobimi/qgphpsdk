@@ -30,6 +30,11 @@ class Api
     {
         $curl = new \Curl\Curl();
         $result = $curl->get(self::AllocateUrl, $params);
+        if ($result->error) {
+            $curl->close();
+            return ['Code' => $result->error_code, 'Msg' => $result->error_message];
+        }
+        $curl->close();
         return json_decode($result->response, true) ?? [];
     }
 
