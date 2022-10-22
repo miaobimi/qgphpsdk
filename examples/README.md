@@ -1,9 +1,11 @@
 ### 业务购买成功后在用户中心拿到你的Authkey和Authpwd
+```
 $authkey = '你的Authkey';
 $authpwd = '你的Authpwd';
+```
 
-### 动态独享
-``` 
+### 动态独享(DymanicAlone.php)
+``` javascript
 // 1. 使用提取IP资源接口提取到IP
 $result = Api::allocate(['Key' => $authkey]); //更多参数 请看文档后接口列表
 if($result['Code'] == 0){
@@ -36,8 +38,8 @@ if($result['Code'] == 0){
 }
 ```
 
-### 动态独占
-``` 
+### 动态独占(DymanicExcusive.php)
+``` javascript
 // 1. 申请独占资源
 $result = Api::monopolizeResources(['Key' => $authkey]); //更多参数 请看文档后接口列表
 if($result['Code'] == 0){
