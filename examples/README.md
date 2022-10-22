@@ -1,3 +1,4 @@
+
 ### 业务购买成功后在用户中心拿到你的Authkey和Authpwd
 ```
 $authkey = '你的Authkey';
@@ -85,7 +86,6 @@ if($result['Code'] == 0){
 }else{
     var_dump($result);die;
 }
-
 ```
 
 ```
