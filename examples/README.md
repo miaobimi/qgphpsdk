@@ -1,10 +1,10 @@
-### 
+### 业务购买成功后在用户中心拿到你的Authkey和Authpwd
 ```
     $authkey = '你的Authkey';
     $authpwd = '你的Authpwd';
 ```
 
-### 使用（动态独享）
+### 动态独享
 ``` 
     // 1. 使用提取IP资源接口提取到IP
     $result = Api::allocate(['Key' => $authkey]); //更多参数 请看文档后接口列表
@@ -29,15 +29,17 @@
                 var_dump($curl->response);
             }
             //3. 获取到数据之后你的逻辑
+
+            $curl->close();
         }
-        $curl->close();
+        
     }else{
         var_dump($result);die;
     }
 
 ```
 
-### 使用（动态独占）
+### 动态独占
 ``` 
     // 1. 申请独占资源
     $result = Api::monopolizeResources(['Key' => $authkey]); //更多参数 请看文档后接口列表
@@ -88,5 +90,5 @@
 ```
 
 ```
- 您可以在examples目录下找到更全面的示例
+ 您可以在examples目录下找到更全面的API接口
 ```
