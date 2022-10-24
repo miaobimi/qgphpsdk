@@ -119,6 +119,41 @@ if($result['Code'] == 0){
 }
 ```
 
+### 隧道(Tunnel.php)
+``` javascript
+//用户中心查看隧道地址端口
+$tunnelUrl = 'tunnel.qg.net';
+$tunnelPort = '666';
+$curl = new \Curl\Curl();
+//将发起IP添加到白名单后，可不需要账密验证
+$curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
+$curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+$curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
+$curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
+
+//如果想获取的IP重复 可以打上标记，如果为固定时长多通道产品可分别打不同的标记 如 channel-1 channel-2 channel-3 
+$curl->setHeader('Proxy-TunnelID', 'channel-1');
+
+//针对隧道每次请求换ip 产品 可以标记IP的存活时间
+$curl->setHeader('Proxy-TTL', '10'); //Proxy-TTL指定该标记IP的存活时间(单位 秒)
+
+$targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
+
+// 使用隧道发起爬取请求
+$curl->setOpt(CURLOPT_PROXY, $tunnelUrl);
+$curl->setOpt(CURLOPT_PROXYPORT, $tunnelPort);
+$curl->get($targetUrl);
+if ($curl->error) {
+    var_dump($curl->error_message);
+} else {
+    var_dump($curl->response);
+}
+// 获取到数据之后你的逻辑
+    
+$curl->close();
+ 
+```
+
 ```
  您可以在examples目录下找到更全面的API接口
 ```
