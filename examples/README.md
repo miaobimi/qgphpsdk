@@ -5,10 +5,10 @@ $authkey = '你的Authkey';
 $authpwd = '你的Authpwd';
 ```
 
-### 动态独享(DymanicAlone.php)
+### 动态独享(更多接口请查看DymanicAlone.php)
 ``` javascript
 // 1. 使用提取IP资源接口提取到IP
-$result = Api::allocate(['Key' => $authkey]); //更多参数 请看文档后接口列表
+$result = Api::allocate(['Key' => $authkey]); //更多参数 请看DymanicAlone.php
 if($result['Code'] == 0){
     $curl = new \Curl\Curl();
 
@@ -40,12 +40,12 @@ if($result['Code'] == 0){
 }
 ```
 
-### 动态独占(DymanicExcusive.php)
+### 动态独占(更多接口请查看DymanicExcusive.php)
 ``` javascript
 //1. 申请独占资源
-$result = Api::monopolizeResources(['Key' => $authkey]); //更多参数 请看文档后接口列表
+$result = Api::monopolizeResources(['Key' => $authkey]); //更多参数 请看DymanicExcusive.php
 //2. 查询可用独占资源(需要不断查询)
-$result = Api::getMonopolizeResources(['Key' => $authkey]); //更多参数 请看文档后接口列表
+$result = Api::getMonopolizeResources(['Key' => $authkey]); //更多参数 请看DymanicExcusive.php
 if($result['Code'] == 0){
     $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
     $ipArr = [];
@@ -85,10 +85,10 @@ if($result['Code'] == 0){
 ```
 
 
-### 动态共享(DymanicShare.php)
+### 动态共享(更多接口请查看DymanicShare.php)
 ``` javascript
 // 1. 使用提取IP资源接口提取到IP
-$result = Api::allocate(['Key' => $authkey]); //更多参数 请看文档后接口列表
+$result = Api::allocate(['Key' => $authkey]); //更多参数 请看DymanicShare.php
 if($result['Code'] == 0){
     $curl = new \Curl\Curl();
 
@@ -119,7 +119,7 @@ if($result['Code'] == 0){
 }
 ```
 
-### 隧道(Tunnel.php)
+### 隧道(更多接口请查看Tunnel.php)
 ``` javascript
 //用户中心查看隧道地址端口
 $tunnelUrl = 'tunnel.qg.net';
@@ -152,8 +152,4 @@ if ($curl->error) {
     
 $curl->close();
  
-```
-
-```
- 您可以在examples目录下找到更全面的API接口
 ```
