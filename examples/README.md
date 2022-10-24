@@ -33,7 +33,6 @@ if($result['Code'] == 0){
 
         
     }
-    $curl->close();
     
 }else{
     var_dump($result);die;
@@ -75,7 +74,6 @@ if($result['Code'] == 0){
             //4. 获取到数据之后你的逻辑
 
         }
-        $curl->close();
     }
     
 }else{
@@ -112,7 +110,6 @@ if($result['Code'] == 0){
         //3. 获取到数据之后你的逻辑
         
     }
-    $curl->close();
     
 }else{
     var_dump($result);die;
@@ -150,6 +147,5 @@ if ($curl->error) {
 }
 // 获取到数据之后你的逻辑
     
-$curl->close();
  
 ```
