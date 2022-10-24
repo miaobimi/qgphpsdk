@@ -1,112 +1,155 @@
 
-### demo
+### 业务购买成功后在用户中心拿到你的Authkey和Authpwd
 ```
- examples/DymanicShare.php : 动态共享 所有api接口
- examples/DymanicExcusive.php : 动态独占 所有api接口
- examples/DymanicAlone.php : 动态独享 所有api接口
- examples/Tunnel.php : 隧道 所有api接口
- examples/StaticAlone.php : 静态独享 所有api接口
+$authkey = '你的Authkey';
+$authpwd = '你的Authpwd';
 ```
 
-### 使用composer安装
-```
-composer require qgproxy/phpsdk
-```
-
-### Api文档 
-官网文档 [点击查看](https://www.qg.net/list/160.html)
-
-### 使用（以动态共享为例）
+### 动态独享(更多接口请查看DymanicAlone.php)
 ``` javascript
-<?php
+// 1. 使用提取IP资源接口提取到IP
+$result = Api::allocate(['Key' => $authkey]); //更多参数 请看DymanicAlone.php
+if($result['Code'] == 0){
+    $curl = new \Curl\Curl();
 
-include '../vendor/autoload.php';
-
-use qgproxy\Api;
-
-//========提取IP资源=============================================================================
-    $params = [
-        'Key' => 'xxx',
-        // 'Num' => 1, //申请数量，默认为1
-        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
-        // 'Isp' => '', //运营商ID;选填;默认查询全部
-        // 'Detail' => 0, //是否查看详情(可查看到具体的省市县信息)
-        // 'Distinct' => 0, //去重，1为开启，默认为0，仅对动态IP有用
-    ]; 
-    $result = Api::allocate($params); 
-    var_dump($result);die;
-
-    //========使用代理IP=============================================================================
+    //将发起IP添加到白名单后，可不需要账密验证
+    $curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
+    $curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+    $curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
+    $curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
+    $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
     
-    // $targetUrl 目标站点
-    // $proxyIp   代理ip
-    // $proxyPort  代理端口
-    // $proxyUser   authKey(key)
-    // $proxyPassword  authpwd(密码)
-    $result = Api::sendRequest($targetUrl, $proxyIp, $proxyPort, $proxyUser, $proxyPassword);
-    var_dump($result);die;
+    foreach ($result['Data'] as $v) {
+        //2. 使用代理IP发起爬取请求
+        $curl->setOpt(CURLOPT_PROXY, $v['IP']);
+        $curl->setOpt(CURLOPT_PROXYPORT, $v['port']);
+        $curl->get($targetUrl);
+        if ($curl->error) {
+            var_dump($curl->error_message);
+        } else {
+            var_dump($curl->response);
+        }
+        //3. 获取到数据之后你的逻辑
 
-    //========获取IP资源池============================================================================
-    $params = [
-        'Key' => 'xxx',
-        // 'Num' => 1, //申请数量，默认为1
-        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
-        // 'Isp' => '', //运营商ID;选填;默认查询全部
-        // 'Detail' => 0, //查看详情，0为关闭，默认为0
-    ]; 
-    $result = Api::extract($params); 
+        
+    }
+    $curl->close();
+    
+}else{
     var_dump($result);die;
-
-    //=======查询IP资源==============================================================================
-    $params = [
-        'Key' => 'xxx',
-        // 'TaskID' => '', //任务ID;多个用,分隔;全部以”* “表示
-        // 'Detail' => 0, //查看详情，0为关闭，默认为0
-    ]; 
-    $result = Api::query($params); 
-    var_dump($result);die;
-
-    //=======添加白名单==============================================================================
-    $params = [
-        'Key' => 'xxx',
-        // 'IP' => '', //IP地址;多个用,分隔
-    ]; 
-    $result = Api::addWhitelist($params);  
-    var_dump($result);die;
-
-    //=======删除白名单==============================================================================
-    $params = [
-        'Key' => 'xxx',
-        // 'IP' => '', //IP地址;多个用,分隔
-    ]; 
-    $result = Api::delWhitelist($params);
-    var_dump($result);die;
-
-    //========查询白名单=============================================================================
-    $params = [
-        'Key' => 'xxx',
-    ]; 
-    $result = Api::queyrWhitelist($params);
-    var_dump($result);die;
-
-    //========通道配额=============================================================================
-    $params = [
-        'Key' => 'xxx',
-    ]; 
-    $result = Api::infoQuota($params);
-    var_dump($result);die;
-
-    //=========区域查询============================================================================
-    $params = [
-        'Key' => 'xxx',
-        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
-        // 'Isp' => '', //运营商ID;选填;默认查询全部
-        // 'Status' => 0, //可用状态;0为不可用,1为可用;选填;默认全部
-    ]; 
-    $result = Api::resources($params);
-    var_dump($result);die;
+}
 ```
 
+### 动态独占(更多接口请查看DymanicExcusive.php)
+``` javascript
+//1. 申请独占资源
+$result = Api::monopolizeResources(['Key' => $authkey]); //更多参数 请看DymanicExcusive.php
+//2. 查询可用独占资源(需要不断查询)
+$result = Api::getMonopolizeResources(['Key' => $authkey]); //更多参数 请看DymanicExcusive.php
+if($result['Code'] == 0){
+    $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
+    $ipArr = [];
+    foreach ($result['data'] as $v) {
+        if(!empty($v['newest_ip'])){
+            $ipArr[] = $v['newest_ip'];
+        }
+    }
+    if(count($ipArr) > 0){
+        $curl = new \Curl\Curl();
+        //将发起IP添加到白名单后，可不需要账密验证
+        $curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+        $curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
+        $curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
+        foreach ($ipArr as $ip) {
+            $_temp = explode(':', $ip);
+            //3. 使用代理IP发起爬取请求
+            $curl->setOpt(CURLOPT_PROXY, $_temp[0]);
+            $curl->setOpt(CURLOPT_PROXYPORT, $_temp[1]);
+            $curl->get($targetUrl);
+            if ($curl->error) {
+                var_dump($curl->error_message);
+            } else {
+                var_dump($curl->response);
+            }
+            //4. 获取到数据之后你的逻辑
+
+        }
+        $curl->close();
+    }
+    
+}else{
+    var_dump($result);die;
+}
+
 ```
- 您可以在examples目录下找到更全面的示例
+
+
+### 动态共享(更多接口请查看DymanicShare.php)
+``` javascript
+// 1. 使用提取IP资源接口提取到IP
+$result = Api::allocate(['Key' => $authkey]); //更多参数 请看DymanicShare.php
+if($result['Code'] == 0){
+    $curl = new \Curl\Curl();
+
+    //将发起IP添加到白名单后，可不需要账密验证
+    $curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
+    $curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+    $curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
+    $curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
+    $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
+    
+    foreach ($result['Data'] as $v) {
+        //2. 使用代理IP发起爬取请求
+        $curl->setOpt(CURLOPT_PROXY, $v['IP']);
+        $curl->setOpt(CURLOPT_PROXYPORT, $v['port']);
+        $curl->get($targetUrl);
+        if ($curl->error) {
+            var_dump($curl->error_message);
+        } else {
+            var_dump($curl->response);
+        }
+        //3. 获取到数据之后你的逻辑
+        
+    }
+    $curl->close();
+    
+}else{
+    var_dump($result);die;
+}
+```
+
+### 隧道(更多接口请查看Tunnel.php)
+``` javascript
+//用户中心查看隧道地址端口
+$tunnelUrl = 'tunnel.qg.net';
+$tunnelPort = '666';
+$curl = new \Curl\Curl();
+//将发起IP添加到白名单后，可不需要账密验证
+$curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
+$curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+$curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
+$curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
+
+//如果想获取的IP重复 可以打上标记，如果为固定时长多通道产品可分别打不同的标记 如 channel-1 channel-2 channel-3 
+$curl->setHeader('Proxy-TunnelID', 'channel-1');
+
+//针对隧道每次请求换ip 产品 可以标记IP的存活时间
+$curl->setHeader('Proxy-TTL', '10'); //Proxy-TTL指定该标记IP的存活时间(单位 秒)
+
+$targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
+
+// 使用隧道发起爬取请求
+$curl->setOpt(CURLOPT_PROXY, $tunnelUrl);
+$curl->setOpt(CURLOPT_PROXYPORT, $tunnelPort);
+$curl->get($targetUrl);
+if ($curl->error) {
+    var_dump($curl->error_message);
+} else {
+    var_dump($curl->response);
+}
+// 获取到数据之后你的逻辑
+    
+$curl->close();
+ 
 ```
