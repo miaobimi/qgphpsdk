@@ -22,16 +22,6 @@ try {
     $result = Api::allocate($params); 
     var_dump($result);die;
 
-    //========使用代理IP=============================================================================
-    
-    // $targetUrl 目标站点
-    // $proxyIp   代理ip
-    // $proxyPort  代理端口
-    // $proxyUser   authKey(key)
-    // $proxyPassword  authpwd(密码)
-    $result = Api::sendRequest($targetUrl, $proxyIp, $proxyPort, $proxyUser, $proxyPassword);
-    var_dump($result);die;
-
     //========获取IP资源池============================================================================
     $params = [
         'Key' => 'xxx',

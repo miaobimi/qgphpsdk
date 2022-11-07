@@ -45,7 +45,7 @@ if($result['Code'] == 0){
 $result = Api::monopolizeResources(['Key' => $authkey]); //更多参数 请看DymanicExcusive.php
 //2. 查询可用独占资源(需要不断查询)
 $result = Api::getMonopolizeResources(['Key' => $authkey]); //更多参数 请看DymanicExcusive.php
-if($result['Code'] == 0){
+if(is_array($result['data']) && count($result['data']) > 0){
     $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
     $ipArr = [];
     foreach ($result['data'] as $v) {

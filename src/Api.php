@@ -194,7 +194,11 @@ class Api
         $result = $curl->$method($api, $params);
         if ($result->error) {
             $curl->close();
-            return ['Code' => $result->error_code, 'Msg' => $result->error_message];
+            $msg = $result->error_message;
+            if(!empty($result->response)){
+                $msg = json_decode($result->response, true)['error'] ?? $result->error_message;
+            }
+            return ['Code' => $result->error_code, 'Msg' => $msg];
         }
         $curl->close();
         return json_decode($result->response, true) ?? [];

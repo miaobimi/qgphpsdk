@@ -10,17 +10,6 @@ use qgproxy\Api;
 
 try {
 
-    //========使用代理IP=============================================================================
-    
-    // $targetUrl 目标站点
-    // $proxyIp   隧道地址
-    // $proxyPort  隧道端口
-    // $proxyUser   authKey(key)
-    // $proxyPassword  authpwd(密码)
-    $result = Api::sendRequest($targetUrl, $proxyIp, $proxyPort, $proxyUser, $proxyPassword);
-    var_dump($result);die;
-
-
     //=======添加白名单==============================================================================
     $params = [
         'Key' => 'xxx',
