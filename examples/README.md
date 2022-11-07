@@ -49,8 +49,8 @@ if($result['Code'] == 0){
     $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
     $ipArr = [];
     foreach ($result['data'] as $v) {
-        if(!empty($v['newest_ip'])){
-            $ipArr[] = $v['newest_ip'];
+        if(!empty($v['ip'])){
+            $ipArr[] = $v['ip'];
         }
     }
     if(count($ipArr) > 0){

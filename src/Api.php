@@ -11,9 +11,9 @@ class Api
     const QueryUrl = self::Url . '/query';
     const ReleaseUrl = self::Url . '/release';
     const ReplaceUrl = self::Url . '/replace';
-    const MonopolizeResourcesUrl = self::Url . '/monopolize_resources';
-    const NewestIpsUrl = self::Url . '/monopolize_resources/newest_ips';
-    const IdleUrl = self::Url . '/monopolize_resources/idle';
+    const MonopolizeResourcesUrl = self::Url . '/monopolies';
+    const NewestIpsUrl = self::Url . '/monopolies/ips';
+    const IdleUrl = self::Url . '/monopolies/idle';
     const WhitelistAddUrl = self::Url . '/whitelist/add';
     const WhitelistDelUrl = self::Url . '/whitelist/del';
     const WhitelistQueryUrl = self::Url . '/whitelist/query';
@@ -28,14 +28,7 @@ class Api
      */
     public static function allocate(array $params = []): array
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::AllocateUrl, $params);
-        if ($result->error) {
-            $curl->close();
-            return ['Code' => $result->error_code, 'Msg' => $result->error_message];
-        }
-        $curl->close();
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::AllocateUrl, $params);
     }
 
     /**
@@ -46,9 +39,7 @@ class Api
      */
     public static function extract(array $params = []): array
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::ExtractUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::ExtractUrl, $params);
     }
 
     /**
@@ -59,9 +50,7 @@ class Api
      */
     public static function query(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::QueryUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::QueryUrl, $params);
     }
 
     /**
@@ -72,9 +61,7 @@ class Api
      */
     public static function release(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::ReleaseUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::ReleaseUrl, $params);
     }
 
     /**
@@ -85,9 +72,7 @@ class Api
      */
     public static function replace(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::ReplaceUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::ReplaceUrl, $params);
     }
 
     /**
@@ -98,9 +83,7 @@ class Api
      */
     public static function monopolizeResources(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->post(self::MonopolizeResourcesUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::MonopolizeResourcesUrl, $params, 'post');
     }
 
     /**
@@ -111,9 +94,7 @@ class Api
      */
     public static function getMonopolizeResources(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::MonopolizeResourcesUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::MonopolizeResourcesUrl, $params);
     }
 
 
@@ -125,9 +106,7 @@ class Api
      */
     public static function redialMonopolizeResources(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->put(self::NewestIpsUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::NewestIpsUrl, $params, 'put');
     }
 
     /**
@@ -138,9 +117,7 @@ class Api
      */
     public static function releaseMonopolizeResources(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->delete(self::MonopolizeResourcesUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::MonopolizeResourcesUrl, $params, 'delete');
     }
 
     /**
@@ -151,9 +128,7 @@ class Api
      */
     public static function getIdleMonopolizeResources(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::IdleUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::IdleUrl, $params);
     }
 
     /**
@@ -164,9 +139,7 @@ class Api
      */
     public static function addWhitelist(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::WhitelistAddUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::WhitelistAddUrl, $params);
     }
 
     /**
@@ -177,9 +150,7 @@ class Api
      */
     public static function delWhitelist(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::WhitelistDelUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::WhitelistDelUrl, $params);
         
     }
 
@@ -191,9 +162,7 @@ class Api
      */
     public static function queyrWhitelist(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::WhitelistQueryUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::WhitelistQueryUrl, $params);
     }
 
     /**
@@ -204,9 +173,7 @@ class Api
      */
     public static function infoQuota(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::InfoQuotaUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::InfoQuotaUrl, $params);
     }
 
     /**
@@ -217,35 +184,19 @@ class Api
      */
     public static function resources(array $params = [])
     {
-        $curl = new \Curl\Curl();
-        $result = $curl->get(self::ResourcesUrl, $params);
-        return json_decode($result->response, true) ?? [];
+        return self::sendRequest(self::ResourcesUrl, $params);
     }
 
-    /**
-     * 请求
-     *
-     * @param [type] $targetUrl 目标站点
-     * @param [type] $proxyIp   代理ip
-     * @param [type] $proxyPort  代理端口
-     * @param [type] $proxyUser   authKey(key)
-     * @param [type] $proxyPassword  authpwd(密码)
-     * @return void
-     */
-    public static function sendRequest($targetUrl, $proxyIp, $proxyPort, $proxyUser, $proxyPassword)
+   
+    public static function sendRequest(string $api, array $params = [], string $method = 'get'): array
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $targetUrl);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_PROXYPORT, $proxyPort);
-        curl_setopt($ch, CURLOPT_PROXYTYPE, 'HTTP');
-        curl_setopt($ch, CURLOPT_PROXY, $proxyIp);
-        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyUser . ':' . $proxyPassword);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        return $data;
+        $curl = new \Curl\Curl();
+        $result = $curl->$method($api, $params);
+        if ($result->error) {
+            $curl->close();
+            return ['Code' => $result->error_code, 'Msg' => $result->error_message];
+        }
+        $curl->close();
+        return json_decode($result->response, true) ?? [];
     }
 }
