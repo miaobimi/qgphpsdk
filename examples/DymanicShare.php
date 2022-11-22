@@ -18,6 +18,7 @@ try {
         // 'Isp' => '', //运营商ID;选填;默认查询全部
         // 'Detail' => 0, //是否查看详情(可查看到具体的省市县信息)
         // 'Distinct' => 0, //去重，1为开启，默认为0，仅对动态IP有用
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了IP提取鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::allocate($params); 
     var_dump($result);die;
@@ -29,6 +30,7 @@ try {
         // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
         // 'Isp' => '', //运营商ID;选填;默认查询全部
         // 'Detail' => 0, //查看详情，0为关闭，默认为0
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了IP提取鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::extract($params); 
     var_dump($result);die;
