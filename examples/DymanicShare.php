@@ -40,6 +40,7 @@ try {
         'Key' => 'xxx',
         // 'TaskID' => '', //任务ID;多个用,分隔;全部以”* “表示
         // 'Detail' => 0, //查看详情，0为关闭，默认为0
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了API鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::query($params); 
     var_dump($result);die;
@@ -48,6 +49,7 @@ try {
     $params = [
         'Key' => 'xxx',
         // 'IP' => '', //IP地址;多个用,分隔
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了API鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::addWhitelist($params);  
     var_dump($result);die;
@@ -56,6 +58,7 @@ try {
     $params = [
         'Key' => 'xxx',
         // 'IP' => '', //IP地址;多个用,分隔
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了API鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::delWhitelist($params);
     var_dump($result);die;
@@ -63,6 +66,7 @@ try {
     //========查询白名单=============================================================================
     $params = [
         'Key' => 'xxx',
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了API鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::queyrWhitelist($params);
     var_dump($result);die;
@@ -70,6 +74,7 @@ try {
     //========通道配额=============================================================================
     $params = [
         'Key' => 'xxx',
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了API鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::infoQuota($params);
     var_dump($result);die;
@@ -80,6 +85,7 @@ try {
         // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
         // 'Isp' => '', //运营商ID;选填;默认查询全部
         // 'Status' => 0, //可用状态;0为不可用,1为可用;选填;默认全部
+        // 'Pwd' => '', //AuthPwd 如果在用户中心开启了API鉴权 密钥密码模式  则需要传此参数
     ]; 
     $result = Api::resources($params);
     var_dump($result);die;
