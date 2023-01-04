@@ -21,7 +21,7 @@ while(true){
     }else{
         file_put_contents('error.txt', date('Y-m-d H:i:s').':'.$result['Msg'].PHP_EOL, FILE_APPEND);
     }
-    sleep(40);
+    sleep(40); //动态独享40s刷新一次IP池，请求频率1请求/s
 }
 
 ?>
