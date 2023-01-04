@@ -26,8 +26,6 @@ while(true){
     // sleep(20);//动态共享按量20s刷新一次IP池，请求频率1请求/s
 }
 
-?>
-
 //2. 取出代理IP发起爬取请求
 <?php
 ignore_user_abort();//关闭浏览器后，继续执行php代码
@@ -60,11 +58,13 @@ while(true){
     }
     sleep($delay);
 }
-?>
 ```
 
 ### 隧道(更多接口请查看Tunnel.php)
 ``` javascript
+<?php
+ignore_user_abort();//关闭浏览器后，继续执行php代码
+set_time_limit(0);//程序执行时间无限制
 //用户中心查看隧道地址端口
 $tunnelUrl = 'tunnel.qg.net';
 $tunnelPort = '666';
