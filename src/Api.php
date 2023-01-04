@@ -191,6 +191,8 @@ class Api
     public static function sendRequest(string $api, array $params = [], string $method = 'get'): array
     {
         $curl = new \Curl\Curl();
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+        $curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
         $result = $curl->$method($api, $params);
         if ($result->error) {
             $curl->close();
