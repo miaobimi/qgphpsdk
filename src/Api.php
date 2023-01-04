@@ -50,7 +50,7 @@ class Api
      */
     public static function query(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::QueryUrl, $params), $params);
+        return self::sendRequest(self::QueryUrl, $params);
     }
 
     /**
@@ -61,7 +61,7 @@ class Api
      */
     public static function release(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::ReleaseUrl, $params), $params);
+        return self::sendRequest(self::ReleaseUrl, $params);
     }
 
     /**
@@ -83,7 +83,7 @@ class Api
      */
     public static function monopolizeResources(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::MonopolizeResourcesUrl, $params), $params, 'post');
+        return self::sendRequest(self::MonopolizeResourcesUrl, $params, 'post');
     }
 
     /**
@@ -94,7 +94,7 @@ class Api
      */
     public static function getMonopolizeResources(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::MonopolizeResourcesUrl, $params), $params);
+        return self::sendRequest(self::MonopolizeResourcesUrl, $params);
     }
 
 
@@ -106,7 +106,7 @@ class Api
      */
     public static function redialMonopolizeResources(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::NewestIpsUrl, $params), $params, 'put');
+        return self::sendRequest(self::NewestIpsUrl, $params, 'put');
     }
 
     /**
@@ -117,7 +117,7 @@ class Api
      */
     public static function releaseMonopolizeResources(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::MonopolizeResourcesUrl, $params), $params, 'delete');
+        return self::sendRequest(self::MonopolizeResourcesUrl, $params, 'delete');
     }
 
     /**
@@ -128,7 +128,7 @@ class Api
      */
     public static function getIdleMonopolizeResources(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::IdleUrl, $params), $params);
+        return self::sendRequest(self::IdleUrl, $params);
     }
 
     /**
@@ -139,7 +139,7 @@ class Api
      */
     public static function addWhitelist(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::WhitelistAddUrl, $params), $params);
+        return self::sendRequest(self::WhitelistAddUrl, $params);
     }
 
     /**
@@ -150,7 +150,7 @@ class Api
      */
     public static function delWhitelist(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::WhitelistDelUrl, $params), $params);
+        return self::sendRequest(self::WhitelistDelUrl, $params);
         
     }
 
@@ -162,7 +162,7 @@ class Api
      */
     public static function queyrWhitelist(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::WhitelistQueryUrl, $params), $params);
+        return self::sendRequest(self::WhitelistQueryUrl, $params);
     }
 
     /**
@@ -173,7 +173,7 @@ class Api
      */
     public static function infoQuota(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::InfoQuotaUrl, $params), $params);
+        return self::sendRequest(self::InfoQuotaUrl, $params);
     }
 
     /**
@@ -184,7 +184,7 @@ class Api
      */
     public static function resources(array $params = [])
     {
-        return self::sendRequest(self::_buildUrl(self::ResourcesUrl, $params), $params);
+        return self::sendRequest(self::ResourcesUrl, $params);
     }
 
    
@@ -193,7 +193,7 @@ class Api
         $curl = new \Curl\Curl();
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
         $curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
-        $result = $curl->$method($api, $params);
+        $result = $curl->$method(self::_buildUrl($api, $params), $params);
         if ($result->error) {
             $curl->close();
             $msg = $result->error_message;
