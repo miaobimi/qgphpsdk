@@ -28,7 +28,7 @@ use qgproxy\Api;
     $params = [
         'Key' => 'xxx',
         // 'Num' => 1, //申请数量，默认为1
-        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
+        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1799.html)
         // 'Isp' => '', //运营商ID;选填;默认查询全部
         // 'Detail' => 0, //是否查看详情(可查看到具体的省市县信息)
         // 'Distinct' => 0, //去重，1为开启，默认为0，仅对动态IP有用
@@ -50,7 +50,7 @@ use qgproxy\Api;
     $params = [
         'Key' => 'xxx',
         // 'Num' => 1, //申请数量，默认为1
-        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
+        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1799.html)
         // 'Isp' => '', //运营商ID;选填;默认查询全部
         // 'Detail' => 0, //查看详情，0为关闭，默认为0
     ]; 
@@ -99,7 +99,7 @@ use qgproxy\Api;
     //=========区域查询============================================================================
     $params = [
         'Key' => 'xxx',
-        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1439.html)
+        // 'AreaId' => '', //区域编号(https://www.qg.net/doc/1799.html)
         // 'Isp' => '', //运营商ID;选填;默认查询全部
         // 'Status' => 0, //可用状态;0为不可用,1为可用;选填;默认全部
     ]; 

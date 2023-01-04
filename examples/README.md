@@ -7,36 +7,46 @@ $authpwd = '你的Authpwd';
 
 ### 动态独享(更多接口请查看DymanicAlone.php)
 ``` javascript
-// 1. 使用提取IP资源接口提取到IP
-$result = Api::allocate(['Key' => $authkey]); //更多参数 请看DymanicAlone.php
-if($result['Code'] == 0){
-    $curl = new \Curl\Curl();
-
-    //将发起IP添加到白名单后，可不需要账密验证
-    $curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
-    $curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
-    $curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
-    $curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
-    $targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
-    
-    foreach ($result['Data'] as $v) {
-        //2. 使用代理IP发起爬取请求
-        $curl->setOpt(CURLOPT_PROXY, $v['IP']);
-        $curl->setOpt(CURLOPT_PROXYPORT, $v['port']);
-        $curl->get($targetUrl);
-        if ($curl->error) {
-            var_dump($curl->error_message);
-        } else {
-            var_dump($curl->response);
+// 1. 使用提取IP资源接口提取到IP  存入文件
+ignore_user_abort();//关闭浏览器后，继续执行php代码
+set_time_limit(0);//程序执行时间无限制
+while(true){
+    $result = Api::allocate(['Key' => $authkey]); //更多参数 请看DymanicAlone.php
+    if($result['Code'] == 0){
+        unlink('ip.txt');
+        foreach ($result['Data'] as $v) {
+            file_put_contents('ip.txt', $v['IP'].':'.$v['port'].PHP_EOL, FILE_APPEND);
         }
-        //3. 获取到数据之后你的逻辑
-
-        
     }
-    
-}else{
-    var_dump($result);die;
+    sleep(40);
 }
+
+//2. 取出代理IP发起爬取请求
+$ips = explode(PHP_EOL, trim(file_get_contents('ip.txt')));
+$curl = new \Curl\Curl();
+//将发起IP添加到白名单后，可不需要账密验证
+$curl->setOpt(CURLOPT_PROXYUSERPWD, $authkey.':'.$authpwd);
+$curl->setOpt(CURLOPT_SSL_VERIFYPEER, FALSE);
+$curl->setOpt(CURLOPT_SSL_VERIFYHOST, FALSE);
+$curl->setOpt(CURLOPT_PROXYTYPE, 'HTTP');
+$targetUrl = 'https://d.qg.net/ip'; //爬取的目标站点
+
+foreach ($ips as $v) {
+    $temp = explode(':', $v);
+    $ip = $temp[0];
+    $port = $temp[1];
+    
+    $curl->setOpt(CURLOPT_PROXY, $ip);
+    $curl->setOpt(CURLOPT_PROXYPORT, $port);
+    $curl->get($targetUrl);
+    if ($curl->error) {
+        var_dump($curl->error_message);
+    } else {
+        var_dump($curl->response);
+    }
+    //3. 获取到数据之后你的逻辑
+}
+
 ```
 
 ### 动态独占(更多接口请查看DymanicExcusive.php)
